@@ -3,7 +3,7 @@
 col1 = []
 col2 = []
 
-File.open("../input.txt", "r").each do |line|
+File.open("input.txt", "r").each do |line|
   first, second = line.split(" ")
   col1 << first.to_i
   col2 << second.to_i
