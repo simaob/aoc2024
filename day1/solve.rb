@@ -3,7 +3,10 @@
 col1 = []
 col2 = []
 
-File.open("input.txt", "r").each do |line|
+# filename = "example_input.txt"
+filename = "input.txt"
+
+File.open(filename, "r").each do |line|
   first, second = line.split(" ")
   col1 << first.to_i
   col2 << second.to_i
@@ -17,10 +20,13 @@ end
 col1.sort!
 col2.sort!
 
-differences = 0
+distances = 0
+similarity = 0
 
 (0...col1.size).each do |i|
-  differences += (col1[i] - col2[i]).abs
+  distances += (col1[i] - col2[i]).abs
+  similarity += col1[i] * col2.select { |el| el == col1[i] }.size
 end
 
-puts "Total difference is: #{differences}"
+puts "Total distance is: #{distances}"
+puts "Total similarity is: #{similarity}"
