@@ -3,7 +3,7 @@
 col1 = []
 col2 = []
 
-# filename = "example_input.txt"
+# filename = "sample_input.txt"
 filename = "input.txt"
 
 File.open(filename, "r").each do |line|

@@ -1,4 +1,4 @@
-## Day 1: Historian Hysteria
+# Day 1: Historian Hysteria
 
 The Chief Historian is always present for the big Christmas sleigh launch, but nobody has seen him
 in months! Last anyone heard, he was visiting locations that are historically significant to the North
