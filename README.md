@@ -2,9 +2,16 @@
 
 This repo contains my solutions for [advent of code 2024](https://adventofcode.com/2024).
 
-Solutions done using Ruby. All solutions with hardcoded input files. To run them just:
+Solutions done using Ruby. All solutions with hardcoded input files.
+
+### Current Status...
+
+![My current standing](status.png "Calendar with progress")
+
+
+### Running my solutions
 
 ```bash
-cd folder
+cd day[#]
 ruby solve.rb
 ```
