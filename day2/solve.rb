@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 
-require "byebug"
-
 def check_safe(report)
   # Reports are deemed safe if:
   # The levels are either all increasing or all decreasing.
