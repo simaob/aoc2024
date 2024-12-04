@@ -12,7 +12,7 @@ end
 # PART ONE solution
 result = find_muls_and_run_them(File.read("input.txt"))
 
-puts "PART ONE: There result of the instruction is: #{result}"
+puts "PART ONE: The result of the instruction is: #{result}"
 
 # PART TWO solution
 # instructions start enabled
@@ -28,4 +28,4 @@ instruction.gsub!(/don't\(\)(.*?)do\(\)/m, "")
 
 result = find_muls_and_run_them(instruction)
 
-puts "There result of the instruction is: #{result}"
+puts "PART TWO: The result of the instruction is: #{result}"
