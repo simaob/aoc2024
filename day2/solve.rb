@@ -4,7 +4,6 @@
 # The levels are either all increasing or all decreasing.
 # Any two adjacent levels differ by at least one and at most three.
 
-
 def safe_pair?(item, next_item, current_direction)
   diff = next_item.to_i - item.to_i
   return false if diff.abs < 1 || diff.abs > 3
@@ -26,10 +25,12 @@ def check_safe(levels)
 end
 
 def check_safe_with_tolerance(levels)
+  # This version checks if removing any of the levels of a report makes it safe
+  # Part Two of day 2 puzzle.
   return true if check_safe(levels)
 
   (0...levels.size).each do |index|
-    trimmed = levels[0...index] + levels[index+1..-1]
+    trimmed = levels[0...index] + levels[index + 1..]
     return true if check_safe(trimmed)
   end
 
