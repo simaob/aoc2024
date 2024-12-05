@@ -2,6 +2,54 @@
 
 require "byebug"
 
+# Horizontal
+# .XMAS...
+#
+# or
+#
+# .SAMX...
+#
+# Diagonal XMAS could be:
+# .X.....
+# ..M....
+# ...A...
+# ....S..
+#
+# or
+#
+# ...X.
+# ..M..
+# .A...
+# S....
+#
+# or
+#
+# .S...
+# ..A..
+# ...M.
+# ....X
+#
+# or
+#
+# ....S.
+# ...A..
+# ..M...
+# .X....
+# 
+# Vertical:
+#
+# ..X..
+# ..M..
+# ..A..
+# ..S..
+#
+# or
+#
+# ..S..
+# ..A..
+# ..M..
+# ..X..
+
 def count_extra_xmas(starting_char, y, x, matrix)
   xmas = ["X", "M", "A", "S"]
   xmas = xmas.reverse unless starting_char == "X"
@@ -11,13 +59,6 @@ def count_extra_xmas(starting_char, y, x, matrix)
 
   count_xmas = 0
 
-  # Horizontal
-  # .XMAS...
-  #
-  # or
-  #
-  # .SAMX...
-
   if enough_width && xmas.select.with_index { |l, i| l == matrix[y][x + i] }.size == 4
     xmas.each_with_index do |l, idx|
       @matches[y][x + idx] = l
@@ -25,33 +66,6 @@ def count_extra_xmas(starting_char, y, x, matrix)
     count_xmas += 1
   end
 
-  # Diagonal XMAS could be:
-  # .X.....
-  # ..M....
-  # ...A...
-  # ....S..
-  #
-  # or
-  #
-  # ...X.
-  # ..M..
-  # .A...
-  # S....
-  #
-  # or
-  #
-  # .S...
-  # ..A..
-  # ...M.
-  # ....X
-  #
-  # or
-  #
-  # ....S.
-  # ...A..
-  # ..M...
-  # .X....
-  # rightwards
   if enough_width && enough_height &&
       xmas.select.with_index { |l, i| l == matrix[y + i][x + i] }.size == 4
     xmas.each_with_index do |l, idx|
@@ -66,18 +80,6 @@ def count_extra_xmas(starting_char, y, x, matrix)
       end
       count_xmas += 1
     end
-
-    # ..X..
-    # ..M..
-    # ..A..
-    # ..S..
-    #
-    # or
-    #
-    # ..S..
-    # ..A..
-    # ..M..
-    # ..X..
     if xmas.select.with_index { |l, i| l == matrix[y + i][x] }.size == 4
       xmas.each_with_index do |l, idx|
         @matches[y + idx][x] = l
