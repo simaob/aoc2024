@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+require "./helpers"
 require "byebug"
 
 # Horizontal
@@ -50,17 +51,7 @@ require "byebug"
 # ..M..
 # ..X..
 
-def set_matches(word_arr, coords)
-  coords.each_with_index { |(y, x), idx| @matches[y][x] = word_arr[idx] }
-end
-
-def matches_word?(word_arr, coords, matrix)
-  word_arr.each_with_index.all? do |char, idx|
-    char == matrix[coords[idx][0]][coords[idx][1]]
-  end
-end
-
-def count_extra_xmas(starting_char, y, x, matrix)
+def count_xmas(starting_char, y, x, matrix, matches)
   xmas = ["X", "M", "A", "S"]
   xmas = xmas.reverse unless starting_char == "X"
 
@@ -75,22 +66,22 @@ def count_extra_xmas(starting_char, y, x, matrix)
   vertical_coords = (0...xmas.size).map { |i| [y + i, x] }
 
   if enough_width && matches_word?(xmas, horizontal_coords, matrix)
-    set_matches(xmas, horizontal_coords)
+    set_matches(xmas, horizontal_coords, matches)
     count_xmas += 1
   end
 
   if enough_width && enough_height && matches_word?(xmas, diagonal_right_coords, matrix)
-    set_matches(xmas, diagonal_right_coords)
+    set_matches(xmas, diagonal_right_coords, matches)
     count_xmas += 1
   end
 
   if enough_height && x - 3 >= 0 && matches_word?(xmas, diagonal_left_coords, matrix)
-    set_matches(xmas, diagonal_left_coords)
+    set_matches(xmas, diagonal_left_coords, matches)
     count_xmas += 1
   end
 
   if enough_height && matches_word?(xmas, vertical_coords, matrix)
-    set_matches(xmas, vertical_coords)
+    set_matches(xmas, vertical_coords, matches)
     count_xmas += 1
   end
 
@@ -99,19 +90,20 @@ end
 
 input = File.read("input.txt").split
 
-@matches = input.map { |sub_array| Array.new(sub_array.size, ".") }
+matches = input.map { |sub_array| Array.new(sub_array.size, ".") }
 
 count_xmas = 0
 
+## Find XMAS
 input.each_with_index do |line, i|
   line.each_char.with_index do |char, j|
     if ["X", "S"].include?(char)
-      count_xmas += count_extra_xmas(char, i, j, input)
+      count_xmas += count_xmas(char, i, j, input, matches)
     end
   end
 end
 
-@matches.each do |row|
+matches.each do |row|
   row.each do |letter|
     print letter
   end
