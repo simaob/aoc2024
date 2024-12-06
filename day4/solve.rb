@@ -35,7 +35,7 @@ require "byebug"
 # ...A..
 # ..M...
 # .X....
-# 
+#
 # Vertical:
 #
 # ..X..
@@ -50,6 +50,16 @@ require "byebug"
 # ..M..
 # ..X..
 
+def set_matches(word_arr, coords)
+  coords.each_with_index { |(y, x), idx| @matches[y][x] = word_arr[idx] }
+end
+
+def matches_word?(word_arr, coords, matrix)
+  word_arr.each_with_index.all? do |char, idx|
+    char == matrix[coords[idx][0]][coords[idx][1]]
+  end
+end
+
 def count_extra_xmas(starting_char, y, x, matrix)
   xmas = ["X", "M", "A", "S"]
   xmas = xmas.reverse unless starting_char == "X"
@@ -59,34 +69,31 @@ def count_extra_xmas(starting_char, y, x, matrix)
 
   count_xmas = 0
 
-  if enough_width && xmas.select.with_index { |l, i| l == matrix[y][x + i] }.size == 4
-    xmas.each_with_index do |l, idx|
-      @matches[y][x + idx] = l
-    end
+  horizontal_coords = (0...xmas.size).map { |i| [y, x + i] }
+  diagonal_right_coords = (0...xmas.size).map { |i| [y + i, x + i] }
+  diagonal_left_coords = (0...xmas.size).map { |i| [y + i, x - i] }
+  vertical_coords = (0...xmas.size).map { |i| [y + i, x] }
+
+  if enough_width && matches_word?(xmas, horizontal_coords, matrix)
+    set_matches(xmas, horizontal_coords)
     count_xmas += 1
   end
 
-  if enough_width && enough_height &&
-      xmas.select.with_index { |l, i| l == matrix[y + i][x + i] }.size == 4
-    xmas.each_with_index do |l, idx|
-      @matches[y + idx][x + idx] = l
-    end
+  if enough_width && enough_height && matches_word?(xmas, diagonal_right_coords, matrix)
+    set_matches(xmas, diagonal_right_coords)
     count_xmas += 1
   end
-  if enough_height
-    if x - 3 >= 0 && xmas.select.with_index { |l, i| l == matrix[y + i][x - i] }.size == 4 # leftwards
-      xmas.each_with_index do |l, idx|
-        @matches[y + idx][x - idx] = l
-      end
-      count_xmas += 1
-    end
-    if xmas.select.with_index { |l, i| l == matrix[y + i][x] }.size == 4
-      xmas.each_with_index do |l, idx|
-        @matches[y + idx][x] = l
-      end
-      count_xmas += 1
-    end
+
+  if enough_height && x - 3 >= 0 && matches_word?(xmas, diagonal_left_coords, matrix)
+    set_matches(xmas, diagonal_left_coords)
+    count_xmas += 1
   end
+
+  if enough_height && matches_word?(xmas, vertical_coords, matrix)
+    set_matches(xmas, vertical_coords)
+    count_xmas += 1
+  end
+
   count_xmas
 end
 
@@ -104,11 +111,11 @@ input.each_with_index do |line, i|
   end
 end
 
-puts "Search found #{count_xmas} matches"
-
 @matches.each do |row|
   row.each do |letter|
     print letter
   end
   print "\n"
 end
+
+puts "Search found #{count_xmas} matches"
