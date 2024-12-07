@@ -50,6 +50,9 @@ sum_middle_pages = 0
 ## Now let's fix the ones that were wrong
 updates_to_fix.each do |update|
   loop do
+    # No energy to solve this properly, so I'll just take the lazy route...
+    # fix one broken rule at a time and check if I'm done before fixing the next broken rule
+    # bit of a slow process... but seems to work =D
     update.each_with_index do |page, idx|
       remaining = update[idx + 1..]
       to_swap = rules.select { |pre, fol| page == fol && remaining.include?(pre) }
