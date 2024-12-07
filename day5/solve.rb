@@ -2,7 +2,6 @@
 
 require "byebug"
 
-
 def good_update?(update, rules)
   update.each_with_index do |page, idx|
     remaining = update[idx + 1..]
@@ -18,7 +17,7 @@ def good_update?(update, rules)
   true
 end
 
-filename = "input.txt"
+filename = "sample_input.txt"
 
 importing_rules = true
 rules = []
@@ -46,13 +45,20 @@ end
 
 puts "The total sum for correct updates' middle pages is #{sum_middle_pages}"
 
+def swap_elements(arr, ael, bel)
+  a_idx = arr.index(ael)
+  b_idx = arr.index(bel)
+  arr[a_idx] = bel
+  arr[b_idx] = ael
+end
+
 sum_middle_pages = 0
 ## Now let's fix the ones that were wrong
 updates_to_fix.each do |update|
   loop do
     # No energy to solve this properly, so I'll just take the lazy route...
-    # fix one broken rule at a time and check if I'm done before fixing the next broken rule
-    # bit of a slow process... but seems to work =D
+    # fix one broken rule at a time and check if I'm done before fixing the next
+    # broken rule bit of a slow process... but seems to work =D
     update.each_with_index do |page, idx|
       remaining = update[idx + 1..]
       to_swap = rules.select { |pre, fol| page == fol && remaining.include?(pre) }
@@ -60,10 +66,7 @@ updates_to_fix.each do |update|
       unless to_swap.empty?
         a = to_swap.first[0]
         b = to_swap.first[1]
-        a_idx = update.index(a)
-        b_idx = update.index(b)
-        update[a_idx] = b
-        update[b_idx] = a
+        swap_elements(update, a, b)
         break
       end
 
@@ -73,10 +76,7 @@ updates_to_fix.each do |update|
       unless to_swap_maybe.empty?
         a = to_swap_maybe.first[0]
         b = to_swap_maybe.first[1]
-        a_idx = update.index(a)
-        b_idx = update.index(b)
-        update[a_idx] = b
-        update[b_idx] = a
+        swap_elements(update, a, b)
         break
       end
     end
